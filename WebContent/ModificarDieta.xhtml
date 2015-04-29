@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body>
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+
+		<br></br>
+
+		<p:dataTable id="dieta" var="_dieta" editable="true" layout="grid"
+			rows="12" paginator="true" paginatorPosition="bottom"
+			value="#{dietaMBController.dietasList}" style="width: 100%"
+			emptyMessage="No hay registros disponibles">
+			<f:facet name="header">
+           Dietas Registrados
+        </f:facet>
+			<p:ajax event="rowEdit"
+				listener="#{dietaMBController.updateDieta(_dieta)}"
+				update=":form:msgs" />
+
+
+
+			<p:ajax event="rowEditCancel"
+				listener="#{dietaMBController.onRowCancel}" update=":form:msgs" />
+
+
+			<p:column style="width:15px">
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{_dieta.id}" />
+			</p:column>
+
+
+
+
+
+
+
+			<p:column headerText="Descripcion" style="width:80px"
+				filterBy="#{_dieta.descripcion}" filterMatchMode="contains">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_dieta.descripcion}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="descripcion" required="true"
+							validatorMessage="la descripcion de la dieta no puede contener numeros ni simbolos"
+							requiredMessage="Por favor ingrese la descripcion de la dieta"
+							value="#{dietaMBController.descripcion}">
+							<f:validateRegex pattern="^[a-zA-Z]+$" />
+							<f:validateLength minimum="7" maximum="60" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+		
+
+			<p:column filterBy="#{_dieta.estado}" headerText="Estado"
+				filterMatchMode="contains" style="width:100px">
+
+
+				<h:outputText value="#{_dieta.estado}" />
+
+			</p:column>
+
+
+
+			<p:column headerText="Editar" style="width:50px" exportable="false">
+				<p:rowEditor />
+			</p:column>
+
+			<p:column headerText="Borrar" style="width:50px">
+				<p:commandButton id="deletedieta" icon="ui-icon-trash"
+					actionListener="#{dietaMBController.deleteDieta(_dieta)}"
+					ajax="false" styleClass="ui-confirmdialog-yes" />
+			</p:column>
+
+		</p:dataTable>
+
+
+	</h:form>
+
+
+
+</body>
+</html>

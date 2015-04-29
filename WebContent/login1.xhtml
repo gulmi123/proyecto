@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<body>
+
+	<ui:composition template="./WEB-INF/Plantillas/frente.xhtml">
+
+		<ui:define name="top">
+			<center><h1 style="font-family: tahoma, arial, sans-serif; color: #666666;">LOGIN:</h1></center>
+		</ui:define>
+
+		<ui:define name="left">
+              <p:panel style="width:140px;height:120px" > </p:panel>
+            </ui:define>
+
+		<ui:define name="right">
+              <p:panel style="width:140px;height:120px"> </p:panel>
+            </ui:define>
+
+		<ui:define name="content">
+			<center><p:panel style="width:500px;height:120px"> 
+				<h:form id="formL">
+					<h:panelGrid columns="2" cellpadding="2">
+						<p:outputLabel for="usuario" value="Usuario:" />
+						<p:inputText id="usuario" value="#{usuarioMBController.login}"
+							label="Usuario1" required="true" />
+						<p:outputLabel for="clave" value="Clave:" />
+						<p:password id="clave" value="#{usuarioMBController.password}"
+							label="Password 1" required="true" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:growl id="growl" showDetail="true" sticky="true" />
+						<p:commandButton actionListener="#{usuarioMBController.loginVali}"
+							id="iniciar" value="Iniciar Sesion" update="growl"
+							icon="ui-icon-circle-check" />
+					</h:panelGrid>
+				</h:form>
+			</p:panel></center>
+		</ui:define>
+
+		<ui:define name="bottom">
+		</ui:define>
+
+	</ui:composition>
+
+</body>
+</html>

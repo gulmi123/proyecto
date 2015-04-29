@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<body>
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+
+		<br></br>
+
+		<p:dataTable id="tratamiento" var="_tratamiento" editable="true"
+			layout="grid" rows="12" paginator="true" paginatorPosition="bottom"
+			value="#{tratamientoMBController.tratamientosList}"
+			style="width: 100%" emptyMessage="No hay registros disponibles">
+			<f:facet name="header">
+          Tratamientos Registrados
+        </f:facet>
+			<p:ajax event="rowEdit"
+				listener="#{tratamientoMBController.updateTratamiento(_tratamiento)}"
+				update=":form:msgs" />
+			<p:ajax event="rowEditCancel"
+				listener="#{tratamientoMBController.onRowCancel}" update=":form:msgs" />
+
+
+			<p:column style="width:15px">
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{_tratamiento.id}" />
+			</p:column>
+
+
+
+
+
+
+
+			<p:column headerText="Descripcion" style="width:80px"
+				filterBy="#{_tratamiento.descripcion}" filterMatchMode="contains">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_tratamiento.descripcion}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="descripcion" required="true"
+							validatorMessage="la descripcion del tratamiento no puede contener numeros ni simbolos"
+							requiredMessage="Por favor ingrese la descripcion del tratamiento"
+							value="#{tratamientoMBController.descripcion}">
+							<f:validateRegex pattern="^[a-zA-Z]+$" />
+							<f:validateLength minimum="4" maximum="60" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+
+			<p:column filterBy="#{_tratamiento.estado}" headerText="Estado"
+				filterMatchMode="contains" style="width:100px">
+				<h:outputText value="#{_tratamiento.estado}" />
+			</p:column>
+
+
+
+			<p:column headerText="Editar" style="width:50px" exportable="false">
+				<p:rowEditor />
+			</p:column>
+
+			<p:column headerText="Borrar" style="width:50px">
+				<p:commandButton id="deletetratamiento" icon="ui-icon-trash"
+					actionListener="#{tratamientoMBController.deleteTratamiento(_tratamiento)}"
+					ajax="false" styleClass="ui-confirmdialog-yes" />
+			</p:column>
+
+		</p:dataTable>
+
+
+	</h:form>
+
+
+
+</body>
+</html>

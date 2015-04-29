@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body>
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+		
+		<br></br>
+
+		<p:dataTable id="usuario" var="_usuario" editable="true" layout="grid"
+			rows="12" paginator="true" paginatorPosition="bottom"
+			value="#{usuarioMBController.usuariosList}" style="width: 100%"
+			emptyMessage="No hay registros disponibles">
+			<f:facet name="header">
+           Usuarios Registrados
+        </f:facet>
+			<p:ajax event="rowEdit"
+				listener="#{usuarioMBController.updateUsuario(_usuario)}"
+				update=":form:msgs" />
+
+
+
+			<p:ajax event="rowEditCancel"
+				listener="#{usuarioMBController.onRowCancel}" update=":form:msgs" />
+
+
+			<p:column style="width:15px">
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{_usuario.id}" />
+			</p:column>
+
+			<p:column filterBy="#{_usuario.login}" headerText="Login"
+				filterMatchMode="contains" style="width:100px">
+
+
+				<h:outputText value="#{_usuario.login}" />
+
+			</p:column>
+
+			<p:column headerText="Password" style="width:80px">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_usuario.password}" />
+					</f:facet>
+					<f:facet name="input">
+						<h:inputText label="Password" required="true"
+							requiredMessage="Por favor ingrese la contraseña"
+							validatorMessage="El password no cumple con el siguiente formato: * tamaño de 8 a 16 caracteres *una mayuscula * una letra * un numero"
+							value="#{usuarioMBController.password}">
+							<f:validateRegex
+								pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$" />
+
+						</h:inputText>
+
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column style="width:100px" filterBy="#{_usuario.tipoUsuario}"
+				headerText="Tipo de Usuario" filterMatchMode="contains">
+
+				<h:outputText value="#{_usuario.tipoUsuario}" />
+			</p:column>
+
+			<p:column headerText="Apellidos Nombres" style="width:80px">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_usuario.apellidosNombres}" />
+					</f:facet>
+					<f:facet name="input">
+						<h:inputText label="Apellidos Nombres" required="true"
+							validatorMessage="el nombre y apellido no puede contener numeros ni simbolos"
+							requiredMessage="Por favor ingrese el apellido y nombre"
+							value="#{usuarioMBController.apellidosNombres}">
+							<f:validateRegex pattern="^[a-zA-Z]+$" />
+	                        <f:validateLength minimum="4" maximum="60" />
+						</h:inputText>
+
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Correo" style="width:100px">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_usuario.correo}" />
+					</f:facet>
+					<f:facet name="input">
+						<h:inputText label="Correo" required="true"
+							requiredMessage="Por favor ingrese el correo"
+							validatorMessage="El correo no cumple con el formato example@example.com"
+							value="#{usuarioMBController.correo}">
+
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                               <f:validateLength minimum="7" maximum="60" />
+						</h:inputText>
+
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column filterBy="#{_usuario.estado}" headerText="Estado"
+				filterMatchMode="contains" style="width:100px">
+
+
+				<h:outputText value="#{_usuario.estado}" />
+
+			</p:column>
+
+            <p:column headerText="Intentos de clave"
+				filterMatchMode="contains" style="width:100px">
+
+
+				<h:outputText value="#{_usuario.intentos}" />
+
+			</p:column>
+
+			<p:column headerText="Editar" style="width:50px" exportable="false">
+				<p:rowEditor />
+			</p:column>
+
+			<p:column headerText="Borrar" style="width:50px">
+				<p:commandButton id="deleteusuario"  icon="ui-icon-trash"
+					actionListener="#{usuarioMBController.deleteUsuario(_usuario)}"
+					ajax="false" styleClass="ui-confirmdialog-yes" />
+			</p:column>
+
+		</p:dataTable>
+
+
+	</h:form>
+
+
+
+</body>
+</html>

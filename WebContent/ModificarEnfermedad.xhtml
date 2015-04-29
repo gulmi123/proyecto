@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body>
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+
+		<br></br>
+
+		<p:dataTable id="enfermedad" var="_enfermedad" editable="true" layout="grid"
+			rows="12" paginator="true" paginatorPosition="bottom"
+			value="#{enfermedadMBController.enfermedadesList}" style="width: 100%"
+			emptyMessage="No hay registros disponibles">
+			<f:facet name="header">
+          Enfermedades Registradas
+        </f:facet>
+			<p:ajax event="rowEdit"
+				listener="#{enfermedadMBController.updateEnfermedad(_enfermedad)}"
+				update=":form:msgs" />
+
+
+
+			<p:ajax event="rowEditCancel"
+				listener="#{enfermedadMBController.onRowCancel}" update=":form:msgs" />
+
+
+			<p:column style="width:15px">
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{_enfermedad.id}" />
+			</p:column>
+
+
+
+
+
+
+
+			<p:column headerText="Descripcion" style="width:80px"
+				filterBy="#{_enfermedad.descripcion}" filterMatchMode="contains">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_enfermedad.descripcion}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="descripcion" required="true"
+							validatorMessage="la descripcion de la dieta no puede contener numeros ni simbolos"
+							requiredMessage="Por favor ingrese la descripcion de la dieta"
+							value="#{enfermedadMBController.descripcion}">
+							<f:validateRegex pattern="^[a-zA-Z]+$" />
+							<f:validateLength minimum="7" maximum="60" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+		
+
+			<p:column filterBy="#{_enfermedad.estado}" headerText="Estado"
+				filterMatchMode="contains" style="width:100px">
+
+
+				<h:outputText value="#{_enfermedad.estado}" />
+
+			</p:column>
+
+
+
+			<p:column headerText="Editar" style="width:50px" exportable="false">
+				<p:rowEditor />
+			</p:column>
+
+			<p:column headerText="Borrar" style="width:50px">
+				<p:commandButton id="deleteenfermedad" icon="ui-icon-trash"
+					actionListener="#{enfermedadMBController.deleteEnfermedad(_enfermedad)}"
+					ajax="false" styleClass="ui-confirmdialog-yes" />
+			</p:column>
+
+		</p:dataTable>
+
+
+	</h:form>
+
+
+
+</body>
+</html>

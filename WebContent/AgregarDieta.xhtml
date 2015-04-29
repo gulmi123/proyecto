@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+
+
+
+
+</h:head>
+
+
+<body>
+
+	<h:form>
+		<p:growl showDetail="true" />
+
+		<h:panelGrid columns="2" cellpadding="5">
+	<h:outputLabel for="descripcion" value="Descripcion: " />
+										<p:inputText id="descripcion" required="true"
+											validatorMessage="la descripcion de la dieta no puede contener numeros ni simbolos"
+											requiredMessage="Por favor ingrese la descripcion de la dieta"
+											value="#{dietaMBController.descripcion}">
+											<f:validateRegex pattern="^[a-zA-Z]+$" />
+											<f:validateLength minimum="4" maximum="60" />
+										</p:inputText>
+
+
+
+
+
+										<p:commandButton id="adddieta" value="Grabar"
+											actionListener="#{dietaMBController.addDieta}" ajax="false" />
+										<p:commandButton id="reset" value="Borrar"
+											action="#{dietaMBController.reset}" ajax="false" />
+
+		</h:panelGrid>
+
+
+		<p:spacer height="10" />
+
+		<p:separator />
+
+		<p:messages id="messages" showDetail="true" autoUpdate="true"
+			validateClient="true" />
+
+
+
+
+
+
+
+	</h:form>
+
+
+
+</body>
+</html>
