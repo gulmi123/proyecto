@@ -161,8 +161,44 @@ public class UsuarioManagedBean implements Serializable {
 	}
 
 
+public void addUsuarioMad(){
+	
+	
+	
+	Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
+	
+
+		
+
+			cla.setCorreo(getCorreo());
 
 
+			cla.setPassword(clave.cifradoClave(getPassword()));
+			cla.setFechaClave(new Timestamp(fecha.getTime()));
+
+	getUsuarioService().updateUsuario(cla);
+	FacesMessage msg = new FacesMessage("Usuario","Sus datos se actualizaron con exito");
+	FacesContext.getCurrentInstance().addMessage(null, msg);
+	
+}
+public void addcontraseña(){
+	
+Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
+	
+	
+		
+
+			
+
+
+			cla.setPassword(clave.cifradoClave(getPassword()));
+			cla.setFechaClave(new Timestamp(fecha.getTime()));
+
+	getUsuarioService().updateUsuario(cla);
+	FacesMessage msg = new FacesMessage("Usuario","La contraseña se actualizaron con exito");
+	FacesContext.getCurrentInstance().addMessage(null, msg);
+	
+}
 
 	public void loginVali(ActionEvent actionEvent) {
 		RequestContext context = RequestContext.getCurrentInstance();
@@ -200,16 +236,11 @@ public class UsuarioManagedBean implements Serializable {
 			
 			else {
 				
-				
-				
-				
 			
-				
-				
 			
 			if(diferencia==valorParametro){
-			
-				
+				FacesContext contex = FacesContext.getCurrentInstance();
+				contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/cambioClave.xhtml");
 				FacesMessage msg = new FacesMessage(getLogin()+" "+" por favor cambie su contraseña");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 				
@@ -222,7 +253,7 @@ public class UsuarioManagedBean implements Serializable {
 
 				FacesMessage msg = new FacesMessage("Usuario "+getLogin(),"Bienvenido "+getLogin());
 				FacesContext.getCurrentInstance().addMessage(null, msg);
-				contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/GS.xhtml");
+				contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/MAD.xhtml");
 				
 				
 				usu.setIntentos(0);

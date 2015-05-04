@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.unbosque.dao.PacienteDAO;
 import com.unbosque.entidad.Paciente;
+import com.unbosque.entidad.Usuario;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,4 +48,7 @@ public class PacienteService {
     public void setPacienteDAO(PacienteDAO pacienteDAO) {
         this.pacienteDAO = pacienteDAO;
     }
+    public Paciente getPacienteByindetificacion(String identificacion) {
+		return getPacienteDAO().getPacienteByidentificacion(identificacion);
+	}
 }

@@ -1,7 +1,10 @@
 package com.unbosque.dao;
 
 import java.util.List;
+
 import com.unbosque.entidad.Paciente;
+import com.unbosque.entidad.Usuario;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -45,5 +48,20 @@ public class PacienteDAO {
                 .createQuery("from Paciente").list();
         return list;
     }
+    
+    public Paciente getPacienteByidentificacion(String identificacion){
+        try{
+        List list=getSessionFactory().getCurrentSession()
+                        .createQuery("from Paciente where identificacion=? ").setParameter(0, identificacion)
+                     
+                        .list();
+        return (Paciente)list.get(0);
+        }
+        catch(IndexOutOfBoundsException e){
+                return null;
+        }
+    }
+    
+    
 
 }

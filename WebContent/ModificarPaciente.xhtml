@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<body>
+
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+
+		<br></br>
+
+		<p:dataTable id="paciente" var="_paciente" editable="true"
+			layout="grid" rows="12" paginator="true" paginatorPosition="bottom"
+			value="#{pacienteMBController.pacientesList}" style="width: 100%"
+			emptyMessage="No hay registros disponibles">
+			<f:facet name="header">
+           Dietas Registrados
+        </f:facet>
+			<p:ajax event="rowEdit"
+				listener="#{pacienteMBController.updatePaciente(_paciente)}"
+				update=":form:msgs" />
+
+
+
+			<p:ajax event="rowEditCancel"
+				listener="#{pacienteMBController.onRowCancel}" update=":form:msgs" />
+
+
+			<p:column style="width:15px">
+				<f:facet name="header">
+					<h:outputText value="ID" />
+				</f:facet>
+				<h:outputText value="#{_paciente.id}" />
+			</p:column>
+
+
+
+
+
+
+
+			<p:column headerText="Identificacion" style="width:80px"
+				filterBy="#{_paciente.identificacion}" filterMatchMode="contains">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_paciente.identificacion}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="identificacion" required="true"
+							validatorMessage="la identificacion del paciente no puede contener letras ni simbolos"
+							requiredMessage="Por favor ingrese la identificacion del paciente"
+							value="#{pacienteMBController.identificacion}">
+							<f:validateRegex pattern="^[0-9]*$" />
+							<f:validateLength minimum="1" maximum="16" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+
+			<p:column filterBy="#{_paciente.nombresApellidos}"
+				headerText="Nombres y Apellidos" filterMatchMode="contains"
+				style="width:100px">
+
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_paciente.nombresApellidos}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="nombresapellidos" required="true"
+							validatorMessage="El nombre y el apellido del paciente no puede contener numeros ni simbolos"
+							requiredMessage="Por favor ingrese el nombre y el apellido  del paciente"
+							value="#{pacienteMBController.nombresApellidos}">
+							<f:validateRegex pattern="^[a-zA-Z]+$" />
+							<f:validateLength minimum="1" maximum="100" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+			<p:column headerText="Correo" filterMatchMode="contains"
+				style="width:100px">
+
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_paciente.correo}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="email" value="#{pacienteMBController.correo}"
+							required="true" requiredMessage="Por favor ingrese el correo"
+							validatorMessage="No cumple con el formato example@example.com">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column headerText="Telefono" filterMatchMode="contains"
+				style="width:100px">
+
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_paciente.telefono}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="telefono" required="true"
+							validatorMessage="El telefono del paciente no puede contener letras ni simbolos"
+							requiredMessage="Por favor ingrese el numero del paciente"
+							value="#{pacienteMBController.telefono}">
+							<f:validateRegex pattern="^[0-9]*$" />
+							<f:validateLength minimum="1" maximum="12" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+			<p:column filterBy="#{_paciente.progNutricion}"
+				headerText="Programa de nutricion" filterMatchMode="contains"
+				style="width:100px">
+
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{_paciente.progNutricion}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="proNutricion" required="true"
+							validatorMessage="El Programa de nutricion solo puede contener una letra en mayuscula"
+							requiredMessage="Por favor ingrese el programa de nutricion del paciente"
+							value="#{pacienteMBController.progNutricion}">
+							<f:validateRegex pattern="^[A-Z]+$" />
+							<f:validateLength minimum="1" maximum="1" />
+						</p:inputText>
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+
+
+
+			<p:column style="width:30px">
+				<f:facet name="header">
+					<h:outputText value="Estado" />
+				</f:facet>
+				<h:outputText value="#{_paciente.estado}" />
+			</p:column>
+			<p:column headerText="Editar" style="width:50px" exportable="false">
+				<p:rowEditor />
+			</p:column>
+
+
+
+
+
+			<p:column headerText="Borrar" style="width:50px">
+				<p:commandButton id="deletedieta" icon="ui-icon-trash"
+					actionListener="#{dietaMBController.deleteDieta(_dieta)}"
+					ajax="false" styleClass="ui-confirmdialog-yes" />
+			</p:column>
+
+		</p:dataTable>
+
+
+	</h:form>
+
+
+
+</body>
+</html>

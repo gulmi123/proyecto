@@ -22,7 +22,7 @@ public class Paciente implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
-	private Integer identificacion;
+	private String identificacion;
 
 	@Column(name="nombres_apellidos")
 	private String nombresApellidos;
@@ -59,11 +59,11 @@ public class Paciente implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getIdentificacion() {
+	public String getIdentificacion() {
 		return this.identificacion;
 	}
 
-	public void setIdentificacion(Integer identificacion) {
+	public void setIdentificacion(String identificacion) {
 		this.identificacion = identificacion;
 	}
 

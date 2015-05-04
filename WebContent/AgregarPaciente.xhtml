@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+
+
+
+
+</h:head>
+
+
+<body>
+
+	<h:form>
+
+		<h:form>
+			<p:growl showDetail="true" />
+
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:outputLabel for="identificacion" value="Identificacion: " />
+
+				<p:inputText id="identificacion" required="true"
+					validatorMessage="la identificacion del paciente no puede contener letras ni simbolos"
+					requiredMessage="Por favor ingrese la identificacion del paciente"
+					value="#{pacienteMBController.identificacion}">
+					<f:validateRegex pattern="^[0-9]*$" />
+					<f:validateLength minimum="1" maximum="16" />
+				</p:inputText>
+				
+				
+				<h:outputLabel for="nombresapellidos" value="Nombres y Apellidos: " />
+
+				<p:inputText id="nombresapellidos" required="true"
+					validatorMessage="El nombre y el apellido del paciente no puede contener numeros ni simbolos"
+					requiredMessage="Por favor ingrese el nombre y el apellido  del paciente"
+					value="#{pacienteMBController.nombresApellidos}">
+					<f:validateRegex pattern="^[a-zA-Z]+$" />
+					<f:validateLength minimum="1" maximum="100" />
+				</p:inputText>
+				
+				
+            <h:outputText value="correo: " />
+			<p:inputText id="email" value="#{pacienteMBController.correo}"
+				required="true" requiredMessage="Por favor ingrese el correo"
+				validatorMessage="No cumple con el formato example@example.com">
+				<f:validateRegex
+					pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+			</p:inputText>
+			
+			
+ <h:outputText value="Telefono: " />
+<p:inputText id="telefono" required="true"
+					validatorMessage="El telefono del paciente no puede contener letras ni simbolos"
+					requiredMessage="Por favor ingrese el numero del paciente"
+					value="#{pacienteMBController.telefono}">
+					<f:validateRegex pattern="^[0-9]*$" />
+					<f:validateLength minimum="1" maximum="12" />
+				</p:inputText>
+
+
+ <h:outputText value="Programa de nutricion: " />
+<p:inputText id="proNutricion" required="true"
+					validatorMessage="El Programa de nutricion solo puede contener una letra en mayuscula"
+					requiredMessage="Por favor ingrese el programa de nutricion del paciente"
+					value="#{pacienteMBController.progNutricion}">
+					<f:validateRegex pattern="^[A-Z]+$" />
+					<f:validateLength minimum="1" maximum="1" />
+				</p:inputText>
+
+
+
+
+				<p:commandButton id="addpaciente" value="Grabar"
+					actionListener="#{pacienteMBController.addPaciente}" ajax="false" />
+				<p:commandButton id="reset" value="Borrar"
+					action="#{pacienteMBController.reset}" ajax="false" />
+
+			</h:panelGrid>
+
+
+			<p:spacer height="10" />
+
+			<p:separator />
+
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				validateClient="true" />
+
+
+
+
+
+
+
+		</h:form>
+
+
+	</h:form>
+
+
+
+</body>
+</html>

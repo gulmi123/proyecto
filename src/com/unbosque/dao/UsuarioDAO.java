@@ -67,6 +67,18 @@ public class UsuarioDAO {
                 return null;
         }
     }
+    public Usuario getUsuarioByPassword(String password){
+        try{
+        List list=getSessionFactory().getCurrentSession()
+                        .createQuery("from Usuario where password=? ").setParameter(0, password)
+                     
+                        .list();
+        return (Usuario)list.get(0);
+        }
+        catch(IndexOutOfBoundsException e){
+                return null;
+        }
+    }
     
     
     public List<Usuario> getUsuarios() {

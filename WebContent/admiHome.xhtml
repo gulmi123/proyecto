@@ -189,6 +189,34 @@
 							src="http://localhost:8080/ProyectoDietas/ModificarEnfermedad.xhtml"
 							width="900" height="350"> </iframe>
 					</p:tab>
+					<p:tab title="Pacientes">
+						<h:panelGrid columns="2" cellpadding="10">
+
+
+
+
+							<h:form id="formRegP4">
+
+
+								<p:growl showDetail="true" />
+								<p:growl id="msgs" showDetail="true" />
+								<p:panel id="regisPas" header="Registro de Pacientes"
+									toggleable="true" toggleOrientation="vertical"
+									style="margin-bottom:20px">
+									
+									<iframe
+										src="http://localhost:8080/ProyectoDietas/AgregarPaciente.xhtml"
+										width="600" height="200"> </iframe>
+								</p:panel>
+
+							</h:form>
+						</h:panelGrid>
+
+						<br></br>
+						<iframe
+							src="http://localhost:8080/ProyectoDietas/ModificarPaciente.xhtml"
+							width="900" height="350"> </iframe>
+					</p:tab>
 				</p:tabView>
 			</h:form>
 		</ui:define>

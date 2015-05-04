@@ -182,6 +182,9 @@ public class DietaManagedBean implements Serializable {
 		dietaList.addAll(getDietaService().getDietas());
 		return dietaList;
 	}
+	
+
+	
 
 	public DietaService getDietaService() {
 		return dietaService;

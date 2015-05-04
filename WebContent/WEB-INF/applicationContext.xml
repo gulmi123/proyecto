@@ -18,6 +18,8 @@
 	<bean id="Dieta" class="com.unbosque.entidad.Dieta" />
 	<bean id="Enfermedad" class="com.unbosque.entidad.Enfermedad" />
 	<bean id="Parametro" class="com.unbosque.entidad.Parametro" />
+	<bean id="Paciente" class="com.unbosque.entidad.Paciente" />
+<bean id="Phclinica" class="com.unbosque.entidad.Phclinica" />
 	<!-- User Service Declaration -->
 
 	<bean id="UsuarioService" class="com.unbosque.service.UsuarioService">
@@ -39,7 +41,12 @@
 	<bean id="EnfermedadService" class="com.unbosque.service.EnfermedadService">
 		<property name="EnfermedadDAO" ref="EnfermedadDAO" />
 	</bean>
-
+	<bean id="PacienteService" class="com.unbosque.service.PacienteService">
+		<property name="PacienteDAO" ref="PacienteDAO" />
+	</bean>
+	<bean id="PhclinicaService" class="com.unbosque.service.PhclinicaService">
+		<property name="PhclinicaDAO" ref="PhclinicaDAO" />
+	</bean>
 
 
 	<!-- User DAO Declaration -->
@@ -61,6 +68,14 @@
 
 
 	<bean id="ParametroDAO" class="com.unbosque.dao.ParametroDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+	<bean id="PacienteDAO" class="com.unbosque.dao.PacienteDAO">
+		<property name="sessionFactory" ref="SessionFactory" />
+	</bean>
+
+<bean id="PhclinicaDAO" class="com.unbosque.dao.PhclinicaDAO">
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 
@@ -90,6 +105,9 @@
 				<value>com.unbosque.entidad.Tratamiento</value>
 				<value>com.unbosque.entidad.Enfermedad</value>
 				<value>com.unbosque.entidad.Parametro</value>
+				<value>com.unbosque.entidad.Paciente</value>
+				<value>com.unbosque.entidad.Phclinica</value>
+				
 
 			</list>
 		</property>

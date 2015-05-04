@@ -63,7 +63,7 @@ public class DietaDAO {
                 .createQuery("from Dieta").list();
         return list;
     }
-
+    
+  
 }
-
 
