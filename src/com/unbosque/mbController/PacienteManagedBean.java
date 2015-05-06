@@ -16,6 +16,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -29,6 +30,13 @@ import org.primefaces.event.RowEditEvent;
 import org.springframework.dao.DataAccessException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+
 
 
 
@@ -66,7 +74,15 @@ public class PacienteManagedBean implements Serializable {
 
 
 
+	  private  List<String> selectedOptions;
+      public List<String> getSelectedOptions() {
+              return selectedOptions;
+      }
 
+
+      public void setSelectedOptions(List<String> selectedOptions) {
+              this.selectedOptions = selectedOptions;
+      }
 
 
 	List<Paciente> pacienteList;
@@ -87,8 +103,20 @@ private Integer id;
 
 	private String telefono;
 	
-	
-	
+	  private Paciente seleccionado;
+      private List<Paciente> lista;
+      private static final Logger logger = Logger.getLogger(PacienteManagedBean.class);
+      
+      @PostConstruct
+      public void init() {
+                  lista=new ArrayList<Paciente>();
+                
+                  seleccionado=new Paciente();
+          
+                  lista=getPacienteService().getPacientes();
+   
+   
+          }
 
 	
 	public void addPaciente() {
@@ -135,7 +163,7 @@ private Integer id;
 
 
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		} 
 
 	}
@@ -170,7 +198,7 @@ private Integer id;
 			FacesMessage msg = new FacesMessage("Modificar","Se modifico exitosamente el paciente");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 	}
@@ -190,7 +218,7 @@ private Integer id;
 			FacesMessage msg = new FacesMessage("Borrar","Se borro exitosamente el paciente");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 	}
@@ -301,6 +329,26 @@ public void reset(){
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+
+	public Paciente getSeleccionado() {
+		return seleccionado;
+	}
+
+
+	public void setSeleccionado(Paciente seleccionado) {
+		this.seleccionado = seleccionado;
+	}
+
+
+	public List<Paciente> getLista() {
+		return lista;
+	}
+
+
+	public void setLista(List<Paciente> lista) {
+		this.lista = lista;
 	}
 	
 	

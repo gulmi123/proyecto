@@ -26,6 +26,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+
+
+
+
 
 
 
@@ -41,6 +51,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.unbosque.entidad.Dieta;
 import com.unbosque.entidad.Enfermedad;
+import com.unbosque.entidad.Paciente;
 import com.unbosque.service.EnfermedadService;
 
 @ManagedBean(name = "enfermedadMBController")
@@ -58,7 +69,15 @@ public class EnfermedadManagedBean implements Serializable {
 	@ManagedProperty(value = "#{EnfermedadService}")
 	EnfermedadService enfermedadService;
 
+	  private  List<String> selectedOptions;
+      public List<String> getSelectedOptions() {
+              return selectedOptions;
+      }
 
+
+      public void setSelectedOptions(List<String> selectedOptions) {
+              this.selectedOptions = selectedOptions;
+      }
 
 
 
@@ -69,7 +88,23 @@ public class EnfermedadManagedBean implements Serializable {
 
 	private String estado;
 	
+	private Enfermedad seleccionado;
+    private List<Enfermedad> lista;
+    private static final Logger logger = Logger.getLogger(EnfermedadManagedBean.class);
+    
 	
+    public void init() {
+        lista=new ArrayList<Enfermedad>();
+      
+        seleccionado=new Enfermedad();
+
+        lista=getEnfermedadService().getEnfermedades();
+
+
+}
+    
+    
+    
 	
 	public void addEnfermedad() {
 		try {
@@ -108,7 +143,7 @@ public class EnfermedadManagedBean implements Serializable {
 			
 
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		} 
 
 	}
@@ -137,7 +172,7 @@ public class EnfermedadManagedBean implements Serializable {
 			FacesMessage msg = new FacesMessage("Modificar","Se modifico exitosamente la enfermedad");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 	}
@@ -158,7 +193,7 @@ public class EnfermedadManagedBean implements Serializable {
 			FacesMessage msg = new FacesMessage("Borrar","Se borro exitosamente la enfermedad");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 	}
@@ -231,6 +266,26 @@ public class EnfermedadManagedBean implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+
+	public Enfermedad getSeleccionado() {
+		return seleccionado;
+	}
+
+
+	public void setSeleccionado(Enfermedad seleccionado) {
+		this.seleccionado = seleccionado;
+	}
+
+
+	public List<Enfermedad> getLista() {
+		return lista;
+	}
+
+
+	public void setLista(List<Enfermedad> lista) {
+		this.lista = lista;
 	}
 	
 	

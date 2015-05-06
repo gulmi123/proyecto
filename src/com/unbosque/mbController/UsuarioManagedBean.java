@@ -18,13 +18,18 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.springframework.dao.DataAccessException;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
@@ -80,10 +85,10 @@ public class UsuarioManagedBean implements Serializable {
 
 	private int intentos;
 	CifrarClave clave = new CifrarClave();
-	
-	
-	
-	
+	private static final Logger logger = Logger.getLogger(UsuarioManagedBean.class);
+
+
+
 	public void addUsuario() {
 		try {
 
@@ -142,7 +147,7 @@ public class UsuarioManagedBean implements Serializable {
 					FacesContext.getCurrentInstance().addMessage(null, msg);
 
 				} catch (MessagingException e) {
-					throw new RuntimeException(e);
+					logger.error("This is Error message", new Exception("Testing"));
 				}
 			}else{
 
@@ -155,20 +160,20 @@ public class UsuarioManagedBean implements Serializable {
 
 
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 	}
 
 
-public void addUsuarioMad(){
-	
-	
-	
-	Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
-	
+	public void addUsuarioMad(){
 
-		
+		try{
+
+			Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
+
+
+
 
 			cla.setCorreo(getCorreo());
 
@@ -176,29 +181,33 @@ public void addUsuarioMad(){
 			cla.setPassword(clave.cifradoClave(getPassword()));
 			cla.setFechaClave(new Timestamp(fecha.getTime()));
 
-	getUsuarioService().updateUsuario(cla);
-	FacesMessage msg = new FacesMessage("Usuario","Sus datos se actualizaron con exito");
-	FacesContext.getCurrentInstance().addMessage(null, msg);
-	
-}
-public void addcontraseña(){
-	
-Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
-	
-	
-		
+			getUsuarioService().updateUsuario(cla);
+			FacesMessage msg = new FacesMessage("Usuario","Sus datos se actualizaron con exito");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}catch(DataAccessException e ){
+			logger.error("This is Error message", new Exception("Testing"));
+		}
+	}
+	public void addcontraseña(){
+		try{
+			Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
 
-			
+
+
+
+
 
 
 			cla.setPassword(clave.cifradoClave(getPassword()));
 			cla.setFechaClave(new Timestamp(fecha.getTime()));
 
-	getUsuarioService().updateUsuario(cla);
-	FacesMessage msg = new FacesMessage("Usuario","La contraseña se actualizaron con exito");
-	FacesContext.getCurrentInstance().addMessage(null, msg);
-	
-}
+			getUsuarioService().updateUsuario(cla);
+			FacesMessage msg = new FacesMessage("Usuario","La contraseña se actualizo con exito");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}catch(DataAccessException e ){
+			logger.error("This is Error message", new Exception("Testing"));
+		}
+	}
 
 	public void loginVali(ActionEvent actionEvent) {
 		RequestContext context = RequestContext.getCurrentInstance();
@@ -207,24 +216,24 @@ Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPas
 
 
 		Timestamp fechaclave = getUsuarioService().getUsuarioByLoginSolo(getLogin()).getFechaClave();
-	    
-	    Parametro parametro = new Parametro();
-	   
-	String valor = getParametroService().getParametroById(1).getValor();
-	int valorParametro=Integer.parseInt(valor);
+
+		Parametro parametro = new Parametro();
+
+		String valor = getParametroService().getParametroById(1).getValor();
+		int valorParametro=Integer.parseInt(valor);
 
 
 
-	    long diferencia = ( fecha.getTime() - fechaclave.getTime() );
-	    
-	    
-	    Usuario usu = getUsuarioService().getUsuarioByLoginSolo(getLogin());
+		long diferencia = ( fecha.getTime() - fechaclave.getTime() );
+
+
+		Usuario usu = getUsuarioService().getUsuarioByLoginSolo(getLogin());
 
 
 
 		try{
-			
-			
+
+
 			if(getUsuarioService().getUsuarioByLogin(getLogin(),clave.cifradoClave(getPassword()),"A","A")!=null){
 				FacesMessage msg = new FacesMessage("Administrador","Bienvenido Admin");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -232,66 +241,66 @@ Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPas
 				contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/admiHome.xhtml");
 			}
 
-			
-			
-			else {
-				
-			
-			
-			if(diferencia==valorParametro){
-				FacesContext contex = FacesContext.getCurrentInstance();
-				contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/cambioClave.xhtml");
-				FacesMessage msg = new FacesMessage(getLogin()+" "+" por favor cambie su contraseña");
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-				
-		}else{
-			
-			
-			if(getUsuarioService().getUsuarioByLogin(getLogin(),clave.cifradoClave(getPassword()),"U","A")!=null ){
-				
-				FacesContext contex = FacesContext.getCurrentInstance();
 
-				FacesMessage msg = new FacesMessage("Usuario "+getLogin(),"Bienvenido "+getLogin());
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-				contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/MAD.xhtml");
-				
-				
-				usu.setIntentos(0);
-				getUsuarioService().updateUsuario(usu);
-				
-			} else{
-				
-				
-				int xd= getUsuarioService().getUsuarioByLoginSolo(getLogin()).getIntentos();
-				
-				if(xd==3){
-					
-					usu.setEstado("B");
-					getUsuarioService().updateUsuario(usu);
-					
-					FacesMessage msg = new FacesMessage("Error","Usuario bloqueado, el numeros de intentos de ingreso fallidos es:"+""+xd);
+
+			else {
+
+
+
+				if(diferencia>=valorParametro){
+					FacesContext contex = FacesContext.getCurrentInstance();
+					contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/cambioClave.xhtml");
+					FacesMessage msg = new FacesMessage(getLogin()+" "+" por favor cambie su contraseña");
 					FacesContext.getCurrentInstance().addMessage(null, msg);
-					
+
 				}else{
-					
-				
-				usu.setIntentos(xd+1);
-				getUsuarioService().updateUsuario(usu);
-				
-				FacesMessage msg = new FacesMessage("Error","Usuario Incorrecto");
-				FacesContext.getCurrentInstance().addMessage(null, msg);
-				
-				
+
+
+					if(getUsuarioService().getUsuarioByLogin(getLogin(),clave.cifradoClave(getPassword()),"U","A")!=null ){
+
+						FacesContext contex = FacesContext.getCurrentInstance();
+
+						FacesMessage msg = new FacesMessage("Usuario "+getLogin(),"Bienvenido "+getLogin());
+						FacesContext.getCurrentInstance().addMessage(null, msg);
+						contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/MAD.xhtml");
+
+
+						usu.setIntentos(0);
+						getUsuarioService().updateUsuario(usu);
+
+					} else{
+
+
+						int xd= getUsuarioService().getUsuarioByLoginSolo(getLogin()).getIntentos();
+
+						if(xd==3){
+
+							usu.setEstado("B");
+							getUsuarioService().updateUsuario(usu);
+
+							FacesMessage msg = new FacesMessage("Error","Usuario bloqueado, el numeros de intentos de ingreso fallidos es:"+""+xd);
+							FacesContext.getCurrentInstance().addMessage(null, msg);
+
+						}else{
+
+
+							usu.setIntentos(xd+1);
+							getUsuarioService().updateUsuario(usu);
+
+							FacesMessage msg = new FacesMessage("Error","Usuario Incorrecto");
+							FacesContext.getCurrentInstance().addMessage(null, msg);
+
+
+						}
+
+
+					}
 				}
-				
-				
 			}
-		}
-			}
-			
+
 		}
 		catch (IOException e) {
-
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 
@@ -326,7 +335,7 @@ Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPas
 			FacesMessage msg = new FacesMessage("Modificar","Se modifico exitosamente el usario");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 	}
@@ -345,28 +354,11 @@ Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPas
 			FacesMessage msg = new FacesMessage("Borrar","Se borro exitosamente el usuario");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} catch (DataAccessException e) {
-			e.printStackTrace();
+			logger.error("This is Error message", new Exception("Testing"));
 		}
 
 	}
-	public void searchUsuario(int id) {
-		try {
 
-
-			FacesMessage message = null;
-
-
-
-
-			getUsuarioService().getUsuarioById(id);
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "",
-					"Registro agregado exitosamente.");
-
-		} catch (DataAccessException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 
 	public void reset() {

@@ -25,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
+import org.apache.log4j.Logger;
 
 
 
@@ -41,8 +42,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
+
+import com.unbosque.entidad.Dieta;
+import com.unbosque.entidad.Paciente;
 import com.unbosque.entidad.Tratamiento;
-
 import com.unbosque.service.TratamientoService;
 
 
@@ -65,7 +69,15 @@ import com.unbosque.service.TratamientoService;
 		@ManagedProperty(value = "#{TratamientoService}")
 		TratamientoService tratamientoService;
 
-
+		  private  List<String> selectedOptions;
+	        public List<String> getSelectedOptions() {
+	                return selectedOptions;
+	        }
+	 
+	 
+	        public void setSelectedOptions(List<String> selectedOptions) {
+	                this.selectedOptions = selectedOptions;
+	        }
 
 
 
@@ -78,7 +90,22 @@ import com.unbosque.service.TratamientoService;
 		private String estado;
 
 		private Integer id;
-		
+		private Tratamiento seleccionado;
+	    private List<Tratamiento> lista;		
+	    
+		private static final Logger logger = Logger.getLogger(TratamientoManagedBean.class);
+	    
+	    
+	    public void init() {
+            lista=new ArrayList<Tratamiento>();
+          
+            seleccionado=new Tratamiento();
+    
+            lista=getTratamientoService().getTratamientos();
+
+
+    }
+	    
 		
 		public void addTratamiento() {
 			try {
@@ -117,7 +144,7 @@ import com.unbosque.service.TratamientoService;
 
 
 			} catch (DataAccessException e) {
-				e.printStackTrace();
+				logger.error("This is Error message", new Exception("Testing"));
 			} 
 
 		}
@@ -145,7 +172,7 @@ import com.unbosque.service.TratamientoService;
 				FacesMessage msg = new FacesMessage("Modificar","Se modifico exitosamente el tratamiento");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 			} catch (DataAccessException e) {
-				e.printStackTrace();
+				logger.error("This is Error message", new Exception("Testing"));
 			}
 
 		}
@@ -165,7 +192,7 @@ import com.unbosque.service.TratamientoService;
 				FacesMessage msg = new FacesMessage("Borrar","Se borro exitosamente el tratamiento");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 			} catch (DataAccessException e) {
-				e.printStackTrace();
+				logger.error("This is Error message", new Exception("Testing"));
 			}
 
 		}
@@ -244,6 +271,26 @@ import com.unbosque.service.TratamientoService;
 
 		public void setId(Integer id) {
 			this.id = id;
+		}
+
+
+		public Tratamiento getSeleccionado() {
+			return seleccionado;
+		}
+
+
+		public void setSeleccionado(Tratamiento seleccionado) {
+			this.seleccionado = seleccionado;
+		}
+
+
+		public List<Tratamiento> getLista() {
+			return lista;
+		}
+
+
+		public void setLista(List<Tratamiento> lista) {
+			this.lista = lista;
 		}
 
 	

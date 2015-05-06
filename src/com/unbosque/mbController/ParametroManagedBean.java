@@ -76,16 +76,7 @@ public class ParametroManagedBean implements Serializable {
    
    
    
-   
-   public long fechaClaveCam(Date fechaclave){
-   int dia = Integer.parseInt( getParametroService().getParametroById(1).getValor());
-	Date hoy = new Date();
-	
-	long diferencia= ( hoy.getTime() - fechaclave.getTime() );
-
-	return diferencia;
-   }
-	
+  
 	
 	
 	
