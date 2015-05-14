@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+
+
+
+
+</h:head>
+
+
+<body>
+
+	<h:form>
+		<h2>Crear Historial clinico</h2>
+		<h:panelGrid columns="2" cellpadding="5">
+
+			<h:outputText value="Paciente: " />
+			<h:selectOneMenu id="advanced444"
+				value="#{phclinicaMBController.paciente}" var="_paciente"
+				filter="true" filterMatchMode="contains">
+				<f:selectItems value="#{pacienteMBController.getPacienteNombre()}" />
+			</h:selectOneMenu>
+
+
+
+			<h:outputText value="Enfermedad: " />
+			<h:selectOneMenu id="advanced2"
+				value="#{phclinicaMBController.enfermedad}" var="_enfermedad"
+				filter="true" filterMatchMode="contains">
+				<f:selectItems
+					value="#{enfermedadMBController.getEnfermedadNombre()}" />
+			</h:selectOneMenu>
+			<h:outputText value="Dieta: " />
+			<h:selectOneMenu id="advanced" value="#{phclinicaMBController.dieta}"
+				var="_dieta">
+				<f:selectItems value="#{dietaMBController.getDietaNombre()}" />
+
+
+
+
+
+			</h:selectOneMenu>
+
+			<h:outputText value="Tratamiento: " />
+			<h:selectOneMenu id="advanced3"
+				value="#{phclinicaMBController.tratamiento}" var="_tratamiento"
+				filter="true" filterMatchMode="contains">
+				<f:selectItems
+					value="#{tratamientoMBController.getTratamientoNombre()}" />
+
+
+
+			</h:selectOneMenu>
+
+
+
+		</h:panelGrid>
+
+		<p:separator />
+		<p:commandButton id="addphclinica" value="Grabar"
+			actionListener="#{phclinicaMBController.addPhClinica}" ajax="false">
+
+
+		</p:commandButton>
+
+
+
+
+
+
+	</h:form>
+
+
+
+</body>
+</html>

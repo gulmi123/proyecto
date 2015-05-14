@@ -67,10 +67,10 @@ public class UsuarioDAO {
                 return null;
         }
     }
-    public Usuario getUsuarioByPassword(String password){
+    public Usuario getUsuarioByPassword(String login,String password){
         try{
         List list=getSessionFactory().getCurrentSession()
-                        .createQuery("from Usuario where password=? ").setParameter(0, password)
+                        .createQuery("from Usuario where  login=? and password=? ").setParameter(0, login).setParameter(1, password)
                      
                         .list();
         return (Usuario)list.get(0);

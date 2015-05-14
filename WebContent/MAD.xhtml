@@ -20,106 +20,43 @@
 	<h:form id="loginForm">
 		<p:growl showDetail="true" />
 
-		          
- 
-                    <p:tabView orientation="left">
+
+
+		<p:tabView orientation="left">
+
+
+
+			<p:tab title="Gestion de dieta">
                     
-               	<p:tab title="Actualizar Dato">
-                    <h:outputText value="Actualizar Datos " />
-                    <br></br>
-                      
-                 
-    <p:separator />
-    
-    
-		<h:panelGrid columns="2" cellpadding="5">
-	
+             Se ha generado una solicitud para  el paciente: <h:outputText value="#{param['paciente1']}" /> , la enfermedad que padece es :
+             <h:outputText value="#{param['enfermedad']}" /> y tratamiento que sigue es : <h:outputText value="#{param['tratamiento']}" />
+               
 		
-                    	<h:outputText value="correo: " />
-			<p:inputText id="email" value="#{usuarioMBController.correo}"
-				required="true" requiredMessage="Por favor ingrese el correo"
-				validatorMessage="No cumple con el formato example@example.com">
-				<f:validateRegex
-					pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-			</p:inputText>
-			
-			<h:outputText value="Contraseña: " />
-			<p:password id="feedback" required="true"
-				requiredMessage="Por favor ingrese la contraseña"
-				validatorMessage="No cumple con el siguiente formato: * tamaño de 7 a 20 caracteres *una mayuscula * una letra * un numero"
-				value="#{usuarioMBController.password}" feedback="true">
-				</p:password>
-						</h:panelGrid>
-				    <p:separator />
-				    
-				<p:commandButton id="addusuario2" value="Grabar"
-			actionListener="#{usuarioMBController.addUsuarioMad}" ajax="false" />
+		
+
+				<p:separator />
+
+				Seleccione una dieta
+
+				<h:selectOneMenu id="advanced"
+					value="#{phclinicaMBController.dieta}" var="_dieta">
+					<f:selectItems value="#{dietaMBController.getDietaNombre()}" />
 
 
-	
-                    
-                    
-				</p:tab>
+				</h:selectOneMenu>
+
+
+
+
+				<p:separator />
+				<p:commandButton id="addphclinica" value="Grabar"
+					actionListener="#{phclinicaMBController.addDieta}" ajax="false" >
 				
-					<p:tab title="Gestion de dieta">
-                    
-                 
-                    <h:outputText value="Dieta: " />
- 					
- 				 <p:selectOneListbox id="advanced" value="#{phclinicaMBController.dietaClase}" var="_dieta" filter="true"  filterMatchMode="contains" >
-            <f:selectItems value="#{dietaMBController.dietasList}" var="_dietaList" itemLabel="#{_dietaList.descripcion}" itemValue="#{_dietaList}" />
- 
-         
- 
-            <p:column>
-                <h:outputText value="#{_dieta.descripcion}" />
-            </p:column>
-            
-   </p:selectOneListbox>
- 
- 
-                    <h:outputText value="Enfermedad: " />
-  <p:selectOneListbox id="advanced2" value="#{phclinicaMBController.enfermedadClase}" var="_enfermedad"   filter="true" filterMatchMode="contains">
-            <f:selectItems value="#{enfermedadMBController.enfermedadesList}" var="_enfermedadesList" itemLabel="#{_enfermedadesList.descripcion}" itemValue="#{_enfermedadesList}" />
- 
-         
- 
-            <p:column>
-                <h:outputText value="#{_enfermedad.descripcion}" />
-            </p:column>
-   </p:selectOneListbox>
-    <h:outputText value="Tratamiento: " />
-    <p:selectOneListbox id="advanced3" value="#{phclinicaMBController.tratamientoClase}"  var="_tratamiento" filter="true" filterMatchMode="contains">
-            <f:selectItems value="#{tratamientoMBController.tratamientosList}" var="_tratamientosList" itemLabel="#{_tratamientosList.descripcion}" itemValue="#{_tratamientosList}" />
- 
-         
- 
-            <p:column>
-                <h:outputText value="#{_tratamiento.descripcion}" />
-            </p:column>
-   </p:selectOneListbox>
-  
-  
-  
-   <h:outputText value="paciente: " />
-    <p:selectOneListbox id="advanced4" value="#{phclinicaMBController.pacienteClase}"  var="_paciente" filter="true" filterMatchMode="contains">
-            <f:selectItems value="#{pacienteMBController.pacientesList}" var="_pacientesList" itemLabel="#{_pacientesList.nombresApellidos}" itemValue="#{_pacientesList}" />
- 
-         
- 
-            <p:column>
-                <h:outputText value="#{_paciente.nombresApellidos}" />
-            </p:column>
-   </p:selectOneListbox>
-  
-  
- 
-    <p:separator />
-             <p:commandButton id="addphclinica" value="Grabar"
-			actionListener="#{phclinicaMBController.addPhClinica}" ajax="false" />
 
+</p:commandButton>
 
-</p:tab>
+			</p:tab>
+			
 		</p:tabView>
 	</h:form>
 

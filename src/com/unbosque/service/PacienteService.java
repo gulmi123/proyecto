@@ -51,4 +51,7 @@ public class PacienteService {
     public Paciente getPacienteByindetificacion(String identificacion) {
 		return getPacienteDAO().getPacienteByidentificacion(identificacion);
 	}
+    public Paciente getPacienteBynombre(String nombre) {
+		return getPacienteDAO().getPacienteBynombre(nombre);
+	}
 }

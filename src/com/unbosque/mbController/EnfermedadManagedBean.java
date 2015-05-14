@@ -49,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
+
 import com.unbosque.entidad.Dieta;
 import com.unbosque.entidad.Enfermedad;
 import com.unbosque.entidad.Paciente;
@@ -226,6 +227,16 @@ public class EnfermedadManagedBean implements Serializable {
 		enfermedadList = new ArrayList<Enfermedad>();
 		enfermedadList.addAll(getEnfermedadService().getEnfermedades());
 		return enfermedadList;
+	}
+	
+	public List<String> getEnfermedadNombre() {
+		enfermedadList = new ArrayList<Enfermedad>();
+		enfermedadList.addAll(getEnfermedadService().getEnfermedades());
+		List <String > enfermedad = new ArrayList <String>();
+		for (int i = 0; i <enfermedadList.size(); i++) {
+			enfermedad.add(enfermedadList.get(i).getDescripcion());
+		}
+		return enfermedad;
 	}
 
 	public EnfermedadService getEnfermedadService() {

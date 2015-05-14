@@ -54,6 +54,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
+
+import com.unbosque.entidad.Enfermedad;
 import com.unbosque.entidad.Paciente;
 import com.unbosque.service.PacienteService;
 
@@ -249,7 +251,16 @@ public void reset(){
 	}
 	
 	
-	
+	public List<String> getPacienteNombre() {
+		pacienteList = new ArrayList<Paciente>();
+		pacienteList.addAll(getPacienteService().getPacientes());
+		List <String > paciente = new ArrayList <String>();
+		for (int i = 0; i <pacienteList.size(); i++) {
+			paciente.add(pacienteList.get(i).getNombresApellidos());
+		}
+		return paciente;
+	}
+
 	
 	
 	

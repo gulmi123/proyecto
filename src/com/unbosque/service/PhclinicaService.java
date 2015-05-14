@@ -5,8 +5,10 @@ import java.util.List;
 
 
 
+
 import com.unbosque.dao.PhclinicaDAO;
 import com.unbosque.entidad.Phclinica;
+import com.unbosque.entidad.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,9 @@ public class PhclinicaService {
     public void setPhclinicaDAO(PhclinicaDAO phclinicaDAO) {
         this.phclinicaDAO = phclinicaDAO;
     }
+	public Phclinica getPhclinicaBypaciente(String paciente) {
+		return getPhclinicaDAO().getPhclinicaBypaciente(paciente);
+	}
 }
 
 

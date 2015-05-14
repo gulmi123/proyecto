@@ -20,10 +20,10 @@
 		</ui:define>
 
 		<ui:define name="content">
-			<h:form id="form" >
+			<h:form id="form">
 				<h:outputText value="Administrador" />
 				<p:tabView orientation="left">
-				
+
 					<p:tab title="Usuarios">
 						<h:panelGrid columns="2" cellpadding="10">
 
@@ -70,6 +70,17 @@
 
 
 										</p:password>
+
+
+										<h:outputText value="Tipo de usuario: " />
+										<p:selectOneListbox id="basic"
+											value="#{usuarioMBController.tipoUsuario}">
+											<f:selectItem itemLabel="Usuario" itemValue="U" />
+											<f:selectItem itemLabel="Administrador" itemValue="A" />
+										
+										</p:selectOneListbox>
+
+
 
 
 									</h:panelGrid>
@@ -203,7 +214,7 @@
 								<p:panel id="regisPas" header="Registro de Pacientes"
 									toggleable="true" toggleOrientation="vertical"
 									style="margin-bottom:20px">
-									
+
 									<iframe
 										src="http://localhost:8080/ProyectoDietas/AgregarPaciente.xhtml"
 										width="600" height="320"> </iframe>
@@ -217,6 +228,11 @@
 							src="http://localhost:8080/ProyectoDietas/ModificarPaciente.xhtml"
 							width="900" height="350"> </iframe>
 					</p:tab>
+					
+					
+					
+					
+					
 				</p:tabView>
 			</h:form>
 		</ui:define>

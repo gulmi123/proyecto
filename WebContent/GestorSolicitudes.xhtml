@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+
+
+
+
+
+</h:head>
+
+
+<body>
+
+	<h:form id="loginForm">
+		<p:growl showDetail="true" />
+
+
+
+		<p:tabView orientation="left">
+
+			<p:tab title="Actualizar Dato">
+				<iframe
+					src="http://localhost:8080/ProyectoDietas/ActualizarDatos.xhtml"
+					width="600" height="220"> </iframe>
+
+
+
+
+			</p:tab>
+
+			<p:tab title="Historial clinico">
+			
+			<iframe
+									src="http://localhost:8080/ProyectoDietas/AgregarPhclinico.xhtml"
+									width="900" height="350"> </iframe>
+
+
+			</p:tab>
+
+			<p:tab title="Gestor de solicitudes">
+
+				<h2>Gestor de solictudes</h2>
+
+				<h:outputText value="Para hacer la solicitud escoja un paciente: " />
+				<h:selectOneMenu id="advanced4"
+					value="#{phclinicaMBController.paciente}" var="_paciente"
+					filter="true" filterMatchMode="contains">
+					<f:selectItems value="#{pacienteMBController.getPacienteNombre()}" />
+
+
+
+				</h:selectOneMenu>
+
+
+
+				<p:separator />
+				<p:commandButton id="gestor" value="Aceptar"
+				actionListener="#{phclinicaMBController.gestor}" ajax="false" />
+
+				
+			</p:tab>
+		</p:tabView>
+	</h:form>
+
+
+
+</body>
+</html>

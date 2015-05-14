@@ -64,14 +64,12 @@
 				</p:inputText>
 
 
- <h:outputText value="Programa de nutricion: " />
-<p:inputText id="proNutricion" required="true"
-					validatorMessage="El Programa de nutricion solo puede contener una letra en mayuscula"
-					requiredMessage="Por favor ingrese el programa de nutricion del paciente"
-					value="#{pacienteMBController.progNutricion}">
-					<f:validateRegex pattern="^[A-Z]+$" />
-					<f:validateLength minimum="1" maximum="1" />
-				</p:inputText>
+<h:outputText value="Programa de nutricion: " />
+<p:selectOneListbox id="basic" value="#{pacienteMBController.progNutricion}">
+            <f:selectItem itemLabel="Saludx" itemValue="S" />
+            <f:selectItem itemLabel="Total" itemValue="T" />
+            <f:selectItem itemLabel="Coolme" itemValue="C" />
+        </p:selectOneListbox>
 
 
 

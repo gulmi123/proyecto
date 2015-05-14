@@ -7,16 +7,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
+
 
 
 import org.primefaces.context.RequestContext;
@@ -39,6 +43,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 
+
+
 import com.unbosque.entidad.Usuario;
 import com.unbosque.service.UsuarioService;
 import com.unbosque.mbController.CifrarClave;
@@ -46,7 +52,7 @@ import com.unbosque.entidad.Parametro;
 import com.unbosque.service.ParametroService;
 
 @ManagedBean(name = "usuarioMBController")
-@ViewScoped
+@SessionScoped
 public class UsuarioManagedBean implements Serializable {
 
 
@@ -80,6 +86,9 @@ public class UsuarioManagedBean implements Serializable {
 	private String login;
 	private String password;
 	private String tipoUsuario;
+	
+	private String passwordCI;
+	
 	private Date  fecha = new Date();
 	private boolean logeado = false;
 
@@ -106,10 +115,16 @@ public class UsuarioManagedBean implements Serializable {
 
 				usuario.setLogin(getLogin());
 				usuario.setPassword(clave.cifradoClave(getPassword()));
-				usuario.setTipoUsuario("U");
-
+				usuario.setTipoUsuario(getTipoUsuario());
+				usuario.setIntentos(0);
 				getUsuarioService().addUsuario(usuario);
 
+				
+				
+				
+				
+				
+				
 				FacesMessage cuenta = new FacesMessage("Cuenta","Se creo correctamente el usuario");
 				FacesContext.getCurrentInstance().addMessage(null, cuenta);
 
@@ -166,17 +181,13 @@ public class UsuarioManagedBean implements Serializable {
 	}
 
 
+
 	public void addUsuarioMad(){
 
 		try{
 
-			Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
-
-
-
-
-			cla.setCorreo(getCorreo());
-
+			Usuario cla = getUsuarioService().getUsuarioByPassword(getLogin(),clave.cifradoClave(getPasswordCI()));
+			if(getUsuarioService().getUsuarioByPassword(getLogin(),clave.cifradoClave(getPasswordCI()))!=null){
 
 			cla.setPassword(clave.cifradoClave(getPassword()));
 			cla.setFechaClave(new Timestamp(fecha.getTime()));
@@ -184,15 +195,21 @@ public class UsuarioManagedBean implements Serializable {
 			getUsuarioService().updateUsuario(cla);
 			FacesMessage msg = new FacesMessage("Usuario","Sus datos se actualizaron con exito");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
+			}else{
+				FacesMessage msg = new FacesMessage("Contraseña","La contraseña anterior esta mal");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			}
 		}catch(DataAccessException e ){
 			logger.error("This is Error message", new Exception("Testing"));
 		}
 	}
+	
+	
 	public void addcontraseña(){
 		try{
-			Usuario cla = getUsuarioService().getUsuarioByPassword(clave.cifradoClave(getPassword()));
+			Usuario cla = getUsuarioService().getUsuarioByPassword(getLogin(),clave.cifradoClave(getPasswordCI()));
 
-
+if(getUsuarioService().getUsuarioByPassword(getLogin(),clave.cifradoClave(getPasswordCI()))!=null){
 
 
 
@@ -204,6 +221,14 @@ public class UsuarioManagedBean implements Serializable {
 			getUsuarioService().updateUsuario(cla);
 			FacesMessage msg = new FacesMessage("Usuario","La contraseña se actualizo con exito");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
+			
+			
+			
+}else{
+	FacesMessage msg = new FacesMessage("Contraseña","La contraseña anterior esta mal");
+	FacesContext.getCurrentInstance().addMessage(null, msg);
+}
+			
 		}catch(DataAccessException e ){
 			logger.error("This is Error message", new Exception("Testing"));
 		}
@@ -225,6 +250,10 @@ public class UsuarioManagedBean implements Serializable {
 
 
 		long diferencia = ( fecha.getTime() - fechaclave.getTime() );
+		System.out.println(diferencia);
+		long days = TimeUnit.MILLISECONDS.toDays(diferencia);
+	
+	       
 
 
 		Usuario usu = getUsuarioService().getUsuarioByLoginSolo(getLogin());
@@ -246,23 +275,21 @@ public class UsuarioManagedBean implements Serializable {
 			else {
 
 
-
-				if(diferencia>=valorParametro){
+               System.out.println(days);
+               System.out.println(valorParametro);
+				if(days>=valorParametro){
 					FacesContext contex = FacesContext.getCurrentInstance();
 					contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/cambioClave.xhtml");
-					FacesMessage msg = new FacesMessage(getLogin()+" "+" por favor cambie su contraseña");
-					FacesContext.getCurrentInstance().addMessage(null, msg);
-
-				}else{
+					
+				} else{
 
 
 					if(getUsuarioService().getUsuarioByLogin(getLogin(),clave.cifradoClave(getPassword()),"U","A")!=null ){
 
 						FacesContext contex = FacesContext.getCurrentInstance();
 
-						FacesMessage msg = new FacesMessage("Usuario "+getLogin(),"Bienvenido "+getLogin());
-						FacesContext.getCurrentInstance().addMessage(null, msg);
-						contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/MAD.xhtml");
+						
+						contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/GestorSolicitudes.xhtml");
 
 
 						usu.setIntentos(0);
@@ -273,12 +300,13 @@ public class UsuarioManagedBean implements Serializable {
 
 						int xd= getUsuarioService().getUsuarioByLoginSolo(getLogin()).getIntentos();
 
-						if(xd==3){
+						if(xd>=2){
 
 							usu.setEstado("B");
+							usu.setIntentos(xd+1);
 							getUsuarioService().updateUsuario(usu);
 
-							FacesMessage msg = new FacesMessage("Error","Usuario bloqueado, el numeros de intentos de ingreso fallidos es:"+""+xd);
+							FacesMessage msg = new FacesMessage("Error","Usuario bloqueado, el numero de intentos de ingreso fallidos es:"+""+xd);
 							FacesContext.getCurrentInstance().addMessage(null, msg);
 
 						}else{
@@ -617,6 +645,18 @@ public class UsuarioManagedBean implements Serializable {
 
 	public void setIntentos(int intentos) {
 		this.intentos = intentos;
+	}
+
+
+
+	public String getPasswordCI() {
+		return passwordCI;
+	}
+
+
+
+	public void setPasswordCI(String passwordCI) {
+		this.passwordCI = passwordCI;
 	}
 
 

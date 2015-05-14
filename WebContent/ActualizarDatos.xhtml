@@ -18,48 +18,45 @@
 <body>
 
 	<h:form>
-		<p:growl showDetail="true" />
 		
-		
-		
-	 <h:outputText value="Su contraseña caduco por favor cambiar " />
-	 <br></br>
-                      
-      Esta logeado como: <h:outputText value="#{usuarioMBController.login}" />
 
-                    
+		<p:growl showDetail="true" />
+
+		          
+ 
+                
+                    <h:outputText value="Actualizar Contraseña " />
+                    <br></br>
+                      
+                 	Esta logeado como: <h:outputText value="#{usuarioMBController.login}" />
     <p:separator />
     
-    	<h:panelGrid columns="2" cellpadding="5">
-			<h:outputText value="Contraseña: " />
-				
-				
-				
-				 <h:outputText value="Contraseña anterior: " />
+    
+		<h:panelGrid columns="2" cellpadding="5">
+	
+
+        
+               <h:outputText value="Contraseña anterior: " />
 			<p:password id="feedback2" required="true"
 				requiredMessage="Por favor ingrese la contraseña"
 				validatorMessage="No cumple con el siguiente formato: * tamaño de 7 a 20 caracteres *una mayuscula * una letra * un numero"
 				value="#{usuarioMBController.passwordCI}" feedback="true">
 				</p:password>
 					
-				
+			
+			<h:outputText value="Contraseña Nueva: " />
 			<p:password id="feedback" required="true"
 				requiredMessage="Por favor ingrese la contraseña"
 				validatorMessage="No cumple con el siguiente formato: * tamaño de 7 a 20 caracteres *una mayuscula * una letra * un numero"
 				value="#{usuarioMBController.password}" feedback="true">
 				</p:password>
-				
 						</h:panelGrid>
 				    <p:separator />
 				    
 				<p:commandButton id="addusuario2" value="Grabar"
-			actionListener="#{usuarioMBController.addcontraseña}" ajax="false" />
-    
+			actionListener="#{usuarioMBController.addUsuarioMad}" ajax="false" />
 		
-		
-<a href="http://localhost:8080/ProyectoDietas/MAD.xhtml">Ir al mad</a>
 
-	
 
 
 	</h:form>

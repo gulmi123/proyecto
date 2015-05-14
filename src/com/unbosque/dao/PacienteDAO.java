@@ -61,6 +61,16 @@ public class PacienteDAO {
                 return null;
         }
     }
+    public Paciente getPacienteBynombre(String nombre){
+       
+        List list=getSessionFactory().getCurrentSession()
+                        .createQuery("from Paciente where nombres_apellidos=? ").setParameter(0, nombre)
+                     
+                        .list();
+        return (Paciente)list.get(0);
+        
+       
+    }
     
     
 

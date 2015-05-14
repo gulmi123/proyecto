@@ -218,6 +218,15 @@ public class DietaManagedBean implements Serializable {
 	}
 	
 
+	public List<String> getDietaNombre() {
+		dietaList = new ArrayList<Dieta>();
+		dietaList.addAll(getDietaService().getDietas());
+		List <String > dieta = new ArrayList <String>();
+		for (int i = 0; i <dietaList.size(); i++) {
+			dieta.add(dietaList.get(i).getDescripcion());
+		}
+		return dieta;
+	}
 	
 
 	public DietaService getDietaService() {

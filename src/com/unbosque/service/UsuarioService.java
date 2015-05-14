@@ -53,7 +53,7 @@ public class UsuarioService {
 	public Usuario getUsuarioByLoginSolo(String login) {
 		return getUsuarioDAO().getUsuarioByLoginSolo(login);
 	}
-	public Usuario getUsuarioByPassword(String password) {
-		return getUsuarioDAO().getUsuarioByPassword(password);
+	public Usuario getUsuarioByPassword(String login,String password) {
+		return getUsuarioDAO().getUsuarioByPassword(login,password);
 	}
 }

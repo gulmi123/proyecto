@@ -18,12 +18,15 @@ import javax.persistence.Id;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 import org.springframework.dao.DataAccessException;
@@ -50,18 +53,26 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
+
+
+
+
+
 import com.unbosque.entidad.Phclinica;
 import com.unbosque.entidad.Dieta;
 import com.unbosque.entidad.Paciente;
 import com.unbosque.entidad.Tratamiento;
 import com.unbosque.entidad.Enfermedad;
+import com.unbosque.entidad.Usuario;
 import com.unbosque.service.PacienteService;
 import com.unbosque.service.DietaService;
 import com.unbosque.service.PhclinicaService;
 import com.unbosque.service.EnfermedadService;
 import com.unbosque.service.TratamientoService;
 @ManagedBean(name = "phclinicaMBController")
-@ViewScoped
+
+@SessionScoped
 public class PhclinicaManagedBean implements Serializable {
 
 
@@ -103,37 +114,82 @@ public class PhclinicaManagedBean implements Serializable {
 
 	private String dieta;
 	private String enfermedad;
+
 	private String paciente;
 	private String tratamiento;
-	
-	private Dieta dietaClase;
-	private Tratamiento tratamientoClase;
-	private Paciente pacienteClase;
-	private Enfermedad enfermedadClase;
 
-
-
+	private static final Logger logger = Logger.getLogger(UsuarioManagedBean.class);
 
 	Phclinica phclinica = new Phclinica();
-	
-	public void addPhClinica(){
 
-        int idDieta=dietaClase.getId();
-        
-        
-        int idTratamiento=tratamientoClase.getId();
-        int idPaciente=pacienteClase.getId();
-        int idEnfermedad= enfermedadClase.getId();
-        
-		phclinica.setIdDieta(idDieta);
-		phclinica.setFechaHclinica(new Timestamp(fecha.getTime()));
-		phclinica.setIdEnfermedad(idEnfermedad);
-		phclinica.setIdPaciente(idPaciente);
-		phclinica.setIdTratamiento(idTratamiento);
-		phclinica.setEstado("A");
-		
-		
-		getPhclinicaService().addPhclinica(phclinica);
+
+
+
+
+
+	public void gestor(){
+		try {
+
+			Phclinica historial = getPhclinicaService().getPhclinicaBypaciente(getPaciente());
+			FacesContext contex = FacesContext.getCurrentInstance();
+			System.out.println(dieta);
+
+
+			this.enfermedad=historial.getEnfermedad();
+			this.tratamiento=historial.getTratamiento();
+
+
+			contex.getExternalContext().redirect("MAD.xhtml?"+"&paciente1="+paciente+"&enfermedad="+enfermedad+"&tratamiento="+tratamiento);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			logger.error("This is Error message", new Exception("Testing"));
+		}
+	}
+
+
+	public void addDieta(){
+		try{
+			Phclinica historial2 = getPhclinicaService().getPhclinicaBypaciente(getPaciente());
+			historial2.setDieta(getDieta());
+
+			getPhclinicaService().updatePhclinica(historial2);
+
+			FacesContext contex = FacesContext.getCurrentInstance();
+			contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/aceptar.xhtml");
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			logger.error("This is Error message", new Exception("Testing"));
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			logger.error("This is Error message", new Exception("Testing"));
+		}
+
+	}
+
+	public void addPhClinica(){
+		System.out.println(paciente);
+
+
+
+
+		try{
+
+			phclinica.setFechaHclinica(new Timestamp(fecha.getTime()));
+			phclinica.setEnfermedad(enfermedad);
+			phclinica.setPaciente(paciente);
+			phclinica.setDieta(dieta);
+			phclinica.setTratamiento(tratamiento);
+			phclinica.setEstado("A");
+
+
+			getPhclinicaService().addPhclinica(phclinica);
+
+		} catch (DataAccessException e) {
+			// TODO Auto-generated catch block
+			logger.error("This is Error message", new Exception("Testing"));
+		}
 
 
 	}
@@ -144,7 +200,15 @@ public class PhclinicaManagedBean implements Serializable {
 
 
 
-
+	public void aceptar(){
+		FacesContext contex = FacesContext.getCurrentInstance();
+		try {
+			contex.getExternalContext().redirect("http://localhost:8080/ProyectoDietas/GestorSolicitudes.xhtml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			logger.error("This is Error message", new Exception("Testing"));
+		}
+	}
 
 
 
@@ -568,152 +632,6 @@ public class PhclinicaManagedBean implements Serializable {
 
 
 
-
-
-
-
-
-
-
-	public Dieta getDietaClase() {
-		return dietaClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public void setDietaClase(Dieta dietaClase) {
-		this.dietaClase = dietaClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public Tratamiento getTratamientoClase() {
-		return tratamientoClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public void setTratamientoClase(Tratamiento tratamientoClase) {
-		this.tratamientoClase = tratamientoClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public Paciente getPacienteClase() {
-		return pacienteClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public void setPacienteClase(Paciente pacienteClase) {
-		this.pacienteClase = pacienteClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public Enfermedad getEnfermedadClase() {
-		return enfermedadClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public void setEnfermedadClase(Enfermedad enfermedadClase) {
-		this.enfermedadClase = enfermedadClase;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	public List<Dieta> getDietaList() {
-		return dietaList;
-	}
 
 
 

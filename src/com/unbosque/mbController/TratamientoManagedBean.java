@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -26,6 +27,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 import org.apache.log4j.Logger;
+
+
 
 
 
@@ -224,6 +227,18 @@ import com.unbosque.service.TratamientoService;
 		
 		
 		
+		public List<String> getTratamientoNombre() {
+			
+			tratamientoList = new ArrayList<Tratamiento>();
+			tratamientoList.addAll(getTratamientoService().getTratamientos());
+			List <String > tratamiento = new ArrayList <String>();
+			for (int i = 0; i <tratamientoList.size(); i++) {
+				tratamiento.add(tratamientoList.get(i).getDescripcion());
+			}
+			Collections.sort(tratamiento);
+			return tratamiento;
+		}
+
 		
 		
 		
